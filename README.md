@@ -1,18 +1,21 @@
-# Custom SD
-Custom SD is available via the file_sd adapter, which can be used to access SD mechanisms that are not 
-included in official Prometheus releases. The sd adapter outputs a file that can be passed via your `prometheus.yml` 
-as a `file_sd` file. This will allow you to pass your targets to Prometheus for scraping without having 
-to use a static config.
+# Servicenow service discover for Prometheus
 
-# Example
-This directory (`documentation/examples/custom-sd`) contains an example custom service discovery implementation
-as well as a file_sd adapter usage. `adapter-usage` contains the `Discoverer` implementation for a basic Consul
-service discovery mechanism. It simply queries Consul for all it's known services (except Consul itself), 
-and sends them along with all the other service data as labels as a TargetGroup.
-The `adapter` directory contains the adapter code you will want to import and pass your `Discoverer` 
-implementation to.
+## TODO
 
-# Usage
-To use file_sd adapter you must implement a `Discoverer`. In `adapter-usage/main.go` replace the example 
-SD config and create an instance of your SD implementation to pass to the `Adapter`'s `NewAdapter`. See the
-`Note:` comments for the structs and `Run` function.
+This currently chokes on parsing the JSON response from SN, and apparently juggling arbitrary data
+objects is harder in static-typed languages like Go than the free-for-all we're used to with python
+and ansible.
+
+## Building
+
+To build this code, simply run the following from the root directory of this repo:
+
+    go build
+
+## Usage
+
+    export SNOW_USER=wiha1292
+    read -s SNOW_PASS
+    ....
+    export SNOW_PASS
+    ./prometheus-snow-sd --snow.instance=coloradodev --sysparm.query="u_systemlist_customer_organization=sepe"
